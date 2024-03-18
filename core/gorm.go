@@ -5,6 +5,7 @@ import (
 	"goblog/global"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -18,7 +19,7 @@ func InitGorm() *gorm.DB {
 	dsn := global.Config.Mysql.Dsn()
 
 	var mysqlLogger logger.Interface
-	if global.Config.System.Env == "develop" {
+	if global.Config.System.Env == gin.DebugMode {
 		mysqlLogger = logger.Default.LogMode(logger.Info)
 	} else {
 		mysqlLogger = logger.Default.LogMode(logger.Error)
@@ -28,12 +29,13 @@ func InitGorm() *gorm.DB {
 		Logger: mysqlLogger,
 	})
 	if err != nil {
-		global.Log.Error(fmt.Sprintf("[%s] mysql连接失败", dsn))
+		global.Log.Fatalf(fmt.Sprintf("[%s] mysql连接失败", dsn))
+		return nil
 	}
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour * 4)
+	global.Log.Info(fmt.Sprintf("[%s] mysql连接成功", dsn))
 	return db
-
 }
