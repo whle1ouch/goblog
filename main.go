@@ -2,6 +2,7 @@ package main
 
 import (
 	"goblog/core"
+	"goblog/flags"
 	"goblog/global"
 	"goblog/router"
 )
@@ -20,6 +21,15 @@ func main() {
 		return
 	}
 
+	// 数据库迁移
+	option := flags.Parse()
+	if option.IsServerStop() {
+		option.Migration()
+		option.ShowVersion()
+		return
+	}
+
+	// 初始化路由
 	router := router.InitRouter()
 	addr := global.Config.System.Addr()
 	global.Log.Infof("go blog项目启动服务: %s", addr)

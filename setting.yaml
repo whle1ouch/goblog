@@ -3,13 +3,14 @@ mysql:
   port: 3306
   db: goblog_db
   user: root
-  password: root
+  password: 12312312
   log_mode: dev
 
 system:
   host: '0.0.0.0'
   port: 8080
   env: debug
+  version: '0.0.0'
 
 logger:
   level: info
