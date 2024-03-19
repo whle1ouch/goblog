@@ -1,7 +1,12 @@
 package setting_api
 
-import "github.com/gin-gonic/gin"
+import (
+	"goblog/global"
+	"goblog/models/res"
+
+	"github.com/gin-gonic/gin"
+)
 
 func (SettingApi) SettingInfoView(c *gin.Context) {
-	c.JSON(200, gin.H{"msg": "SettingInfoView"})
+	res.OkWithData(global.Config.SiteInfo, c)
 }

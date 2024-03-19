@@ -14,11 +14,11 @@ type ArticleModel struct {
 	CommentModels   []CommentModel `gorm:"foreignkey:ArticleID;" json:"-"`
 	UserModel       UserModel      `gorm:"foreignkey:UserID;" json:"-"`
 	UserID          uint           `json:"user_id"`
-	Catagory        string         `gorm:"column:"`
+	Catagory        string         `gorm:"column:Category;type:varchar(32);not null;comment:分类" json:"category"`
 	WordCount       int            `json:"word_count"`
 	BannerModel     BannerModel    `gorm:"foreignKey:BannerID" json:"-"`
 	BannerID        uint           `json:"banner_id"`
 	BannerPath      string         `json:"banner_path"`
-	NickName        string         `gorm:"column:nick_name;type:varchar(42)" json:"nick_name"`
+	NickName        string         `gorm:"column:nick_name;type:varchar(42);comment:用户昵称" json:"nick_name"`
 	Tags            ctype.Array    `gorm:"type:string;size:64"`
 }

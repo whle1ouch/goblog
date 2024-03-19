@@ -10,11 +10,11 @@ import (
 func main() {
 	// 配置初始化
 	core.InitConfig()
+	option := flags.Parse()
+	option.ShowVersion()
 
 	// 初始化日志
 	global.Log = core.InitLogger()
-	global.Log.Infof("日志初始化成功")
-	global.Log.Errorf("sss")
 	// 连接数据库
 	global.DB = core.InitGorm()
 	if global.DB == nil {
@@ -22,10 +22,9 @@ func main() {
 	}
 
 	// 数据库迁移
-	option := flags.Parse()
+
 	if option.IsServerStop() {
 		option.Migration()
-		option.ShowVersion()
 		return
 	}
 

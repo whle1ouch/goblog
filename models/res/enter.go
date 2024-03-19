@@ -54,11 +54,12 @@ func FailWithDetailed(data any, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
 }
 
-func FailWithCode(code int, c *gin.Context) {
-	msg, ok := ErrorMap[ErrorCode(code)]
+func FailWithCode(code ErrorCode, c *gin.Context) {
+	msg, ok := ErrorMap[code]
 	if ok {
-		Result(code, map[string]any{}, msg, c)
+		Result(int(code), map[string]any{}, msg, c)
+		return
 	}
-	Result(code, map[string]any{}, msg, c)
+	Result(int(code), map[string]any{}, msg, c)
 
 }
