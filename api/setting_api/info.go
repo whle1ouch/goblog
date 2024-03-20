@@ -8,5 +8,21 @@ import (
 )
 
 func (SettingApi) SettingInfoView(c *gin.Context) {
-	res.OkWithData(global.Config.SiteInfo, c)
+	uri := SettingURI{}
+	err := c.ShouldBindUri(&uri)
+	if err != nil {
+		res.FailWithCode(res.URIError, c)
+		return
+	}
+	switch uri.Name {
+	case "info":
+		res.OkWithData(global.Config.SiteInfo, c)
+	case "qq":
+		res.OkWithData(global.Config.QQInfo, c)
+	case "jwt":
+		res.OkWithData(global.Config.JWT, c)
+	default:
+		res.FailWithCode(res.AugmentError, c)
+	}
+
 }

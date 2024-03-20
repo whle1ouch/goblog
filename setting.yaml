@@ -3,7 +3,7 @@ mysql:
   port: 3306
   db: goblog_db
   user: root
-  password: '12312312'
+  password: "12312312"
   log_mode: dev
 logger:
   level: info
@@ -13,21 +13,21 @@ logger:
   log_in_console: true
 system:
   host: 0.0.0.0
-  port: '8080'
+  port: "8080"
   env: debug
   version: 0.0.0
 site_info:
   name: goblog
-  create_at: '2024-03-19'
+  create_at: "2024-03-19"
   title: 你好哇
   web_version: 0.0.0
   addr: CN
   email: wwww@xxx.com
-qq:
-  app_id: '123123'
-  app_key: '123123'
-  redirect_uri: 'http://xx.xx.com/qq_login'
 jwt:
-  secret: 'ww'
+  secret: ww
   expires: 48
-  issuer: 'goblog'
+  issuer: goblog
+qq:
+  app_id: "123123"
+  key: ""
+  redirect: ""
