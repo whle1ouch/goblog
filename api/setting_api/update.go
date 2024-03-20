@@ -1,7 +1,6 @@
 package setting_api
 
 import (
-	"errors"
 	"goblog/config"
 	"goblog/core"
 	"goblog/global"
@@ -9,28 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
-var newMap = map[string]interface{}{
-	"info": func() config.SiteInfo { return config.SiteInfo{} },
-	"qq":   func() config.QQInfo { return config.QQInfo{} },
-	"jwt":  func() config.JWT { return config.JWT{} },
-}
-
-func handler(uri string, c *gin.Context) (any, error) {
-	cr, ok := newMap[uri]
-	if !ok {
-		return nil, errors.New("uri错误")
-	}
-	err := c.ShouldBindJSON(&cr)
-	if err != nil {
-		return nil, err
-	}
-	err = c.ShouldBindJSON(&cr)
-	if err != nil {
-		return nil, err
-	}
-	return cr, nil
-}
 
 func (SettingApi) SettingInfoUpdateView(c *gin.Context) {
 	var uri SettingURI
@@ -40,12 +17,36 @@ func (SettingApi) SettingInfoUpdateView(c *gin.Context) {
 		return
 	}
 
-	cr, err := handler(uri.Name, c)
+	switch uri.Name {
+	case "info":
+		var cr config.SiteInfo
+		err = c.ShouldBindJSON(&cr)
+		if err != nil {
+			res.FailWithMessage(err.Error(), c)
+		}
+		config.Update(&(global.Config.SiteInfo), cr)
+	case "qq":
+		var cr config.QQInfo
+		err = c.ShouldBindJSON(&cr)
+		if err != nil {
+			res.FailWithMessage(err.Error(), c)
+		}
+		config.Update(&(global.Config.QQInfo), cr)
+	case "jwt":
+		var cr config.SiteInfo
+		err = c.ShouldBindJSON(&cr)
+		if err != nil {
+			res.FailWithMessage(err.Error(), c)
+		}
+		config.Update(&(global.Config.SiteInfo), cr)
+	default:
+		res.FailWithCode(res.AugmentError, c)
+		return
+	}
 	if err != nil {
 		res.FailWithMessage(err.Error(), c)
 		return
 	}
-	config.Update()
 
 	err = core.WriteConfigToYaml()
 	if err != nil {
